@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobotControl", "RobotControl\RobotControl.csproj", "{AAB0BE1F-780A-489E-B5D1-FCA201AF6C09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11DCC03-CEED-4086-9873-ED08021ED039}"
+	ProjectSection(SolutionItems) = preProject
+		General Overview.png = General Overview.png
+		servo_controls\servo_controls.ino = servo_controls\servo_controls.ino
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAB0BE1F-780A-489E-B5D1-FCA201AF6C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB0BE1F-780A-489E-B5D1-FCA201AF6C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB0BE1F-780A-489E-B5D1-FCA201AF6C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB0BE1F-780A-489E-B5D1-FCA201AF6C09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D33E9A6F-550F-4087-BA11-D49E606BC584}
+	EndGlobalSection
+EndGlobal

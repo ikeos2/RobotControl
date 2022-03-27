@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -8,11 +9,11 @@ namespace RobotControl
     {
         SerialInterface comPort;
         bool connected;
+        bool liveMode;
 
         public Form1()
         {
             connected = false;
-
             string[] ports = SerialInterface.GetPorts();
 
             InitializeComponent();
@@ -27,6 +28,7 @@ namespace RobotControl
             }
             
             SetConnectionStatus(false);
+            liveMode = liveModeToggle.Checked;
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
@@ -74,10 +76,10 @@ namespace RobotControl
             connectionStatusLabel.BackColor = System.Drawing.Color.Red;
         }
 
-        private void SendTest_Click(object sender, EventArgs e)
+        private void SendCommand(object sender, EventArgs e)
         {
             if (!connected) return;
-            comPort.SendCommand(1, (byte)servo1Control.Value);
+            comPort.SendCommand(1, (byte)baseServoControl.Value);
             comPort.SendCommand(2, (byte)joint1Control.Value);
             comPort.SendCommand(3, (byte)joint2Control.Value);
         }
@@ -97,6 +99,33 @@ namespace RobotControl
                 comPort.SendCommand(1, i);
                 comPort.SendCommand(2, i);
                 comPort.SendCommand(3, i);
+            }
+        }
+
+        private void LiveModeToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            liveMode = liveModeToggle.Checked;
+            sendDataButton.Enabled = !liveMode;
+        }
+
+        private void ServoUpdate(Object sender, EventArgs e)
+        {
+            if (!liveMode || !connected) return;
+            if (sender.GetType() != typeof(NumericUpDown)) return;
+
+            NumericUpDown typedSender = (NumericUpDown)sender;
+
+            switch (typedSender.Name)
+            {
+                case "baseServoControl":
+                    comPort.SendCommand(1, (byte)baseServoControl.Value);
+                    break;
+                case "joint1Control":
+                    comPort.SendCommand(2, (byte)joint1Control.Value);
+                    break;
+                case "joint2Control":
+                    comPort.SendCommand(3, (byte)joint2Control.Value);
+                    break;
             }
         }
     }

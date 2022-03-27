@@ -37,14 +37,15 @@ namespace RobotControl
             this.settingsTab = new System.Windows.Forms.TabPage();
             this.baudRateSelector = new System.Windows.Forms.NumericUpDown();
             this.controlsTab = new System.Windows.Forms.TabPage();
+            this.liveModeToggle = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.joint1 = new System.Windows.Forms.Label();
             this.joint1Control = new System.Windows.Forms.NumericUpDown();
             this.joint2Control = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.baseServoLabel = new System.Windows.Forms.Label();
-            this.servo1Control = new System.Windows.Forms.NumericUpDown();
-            this.sendTest = new System.Windows.Forms.Button();
+            this.baseServoControl = new System.Windows.Forms.NumericUpDown();
+            this.sendDataButton = new System.Windows.Forms.Button();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.settingsTab.SuspendLayout();
@@ -52,7 +53,7 @@ namespace RobotControl
             this.controlsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.joint1Control)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.joint2Control)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.servo1Control)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.baseServoControl)).BeginInit();
             this.SuspendLayout();
             // 
             // portSelector
@@ -129,14 +130,15 @@ namespace RobotControl
             // 
             // controlsTab
             // 
+            this.controlsTab.Controls.Add(this.liveModeToggle);
             this.controlsTab.Controls.Add(this.button1);
             this.controlsTab.Controls.Add(this.joint1);
             this.controlsTab.Controls.Add(this.joint1Control);
             this.controlsTab.Controls.Add(this.joint2Control);
             this.controlsTab.Controls.Add(this.label1);
             this.controlsTab.Controls.Add(this.baseServoLabel);
-            this.controlsTab.Controls.Add(this.servo1Control);
-            this.controlsTab.Controls.Add(this.sendTest);
+            this.controlsTab.Controls.Add(this.baseServoControl);
+            this.controlsTab.Controls.Add(this.sendDataButton);
             this.controlsTab.Location = new System.Drawing.Point(4, 24);
             this.controlsTab.Name = "controlsTab";
             this.controlsTab.Padding = new System.Windows.Forms.Padding(3);
@@ -144,6 +146,17 @@ namespace RobotControl
             this.controlsTab.TabIndex = 1;
             this.controlsTab.Text = "Controls";
             this.controlsTab.UseVisualStyleBackColor = true;
+            // 
+            // liveModeToggle
+            // 
+            this.liveModeToggle.AutoSize = true;
+            this.liveModeToggle.Location = new System.Drawing.Point(163, 105);
+            this.liveModeToggle.Name = "liveModeToggle";
+            this.liveModeToggle.Size = new System.Drawing.Size(81, 19);
+            this.liveModeToggle.TabIndex = 10000;
+            this.liveModeToggle.Text = "Live Mode";
+            this.liveModeToggle.UseVisualStyleBackColor = true;
+            this.liveModeToggle.CheckedChanged += new System.EventHandler(this.LiveModeToggle_CheckedChanged);
             // 
             // button1
             // 
@@ -175,6 +188,7 @@ namespace RobotControl
             this.joint1Control.Name = "joint1Control";
             this.joint1Control.Size = new System.Drawing.Size(120, 23);
             this.joint1Control.TabIndex = 2;
+            this.joint1Control.ValueChanged += new System.EventHandler(this.ServoUpdate);
             // 
             // joint2Control
             // 
@@ -187,6 +201,7 @@ namespace RobotControl
             this.joint2Control.Name = "joint2Control";
             this.joint2Control.Size = new System.Drawing.Size(120, 23);
             this.joint2Control.TabIndex = 3;
+            this.joint2Control.ValueChanged += new System.EventHandler(this.ServoUpdate);
             // 
             // label1
             // 
@@ -206,27 +221,28 @@ namespace RobotControl
             this.baseServoLabel.TabIndex = 999;
             this.baseServoLabel.Text = "Base Servo";
             // 
-            // servo1Control
+            // baseServoControl
             // 
-            this.servo1Control.Location = new System.Drawing.Point(81, 15);
-            this.servo1Control.Maximum = new decimal(new int[] {
+            this.baseServoControl.Location = new System.Drawing.Point(81, 15);
+            this.baseServoControl.Maximum = new decimal(new int[] {
             180,
             0,
             0,
             0});
-            this.servo1Control.Name = "servo1Control";
-            this.servo1Control.Size = new System.Drawing.Size(120, 23);
-            this.servo1Control.TabIndex = 1;
+            this.baseServoControl.Name = "baseServoControl";
+            this.baseServoControl.Size = new System.Drawing.Size(120, 23);
+            this.baseServoControl.TabIndex = 1;
+            this.baseServoControl.ValueChanged += new System.EventHandler(this.ServoUpdate);
             // 
-            // sendTest
+            // sendDataButton
             // 
-            this.sendTest.Location = new System.Drawing.Point(81, 102);
-            this.sendTest.Name = "sendTest";
-            this.sendTest.Size = new System.Drawing.Size(75, 23);
-            this.sendTest.TabIndex = 4;
-            this.sendTest.Text = "Send Data";
-            this.sendTest.UseVisualStyleBackColor = true;
-            this.sendTest.Click += new System.EventHandler(this.SendTest_Click);
+            this.sendDataButton.Location = new System.Drawing.Point(81, 102);
+            this.sendDataButton.Name = "sendDataButton";
+            this.sendDataButton.Size = new System.Drawing.Size(75, 23);
+            this.sendDataButton.TabIndex = 4;
+            this.sendDataButton.Text = "Send Data";
+            this.sendDataButton.UseVisualStyleBackColor = true;
+            this.sendDataButton.Click += new System.EventHandler(this.SendCommand);
             // 
             // connectionStatusLabel
             // 
@@ -255,7 +271,7 @@ namespace RobotControl
             this.controlsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.joint1Control)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.joint2Control)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.servo1Control)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.baseServoControl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,14 +289,15 @@ namespace RobotControl
         private System.Windows.Forms.Label connectionStatusLabel;
         private System.Windows.Forms.NumericUpDown baudRateSelector;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button sendTest;
-        private System.Windows.Forms.NumericUpDown servo1Control;
+        private System.Windows.Forms.Button sendDataButton;
+        private System.Windows.Forms.NumericUpDown baseServoControl;
         private System.Windows.Forms.Label joint1;
         private System.Windows.Forms.NumericUpDown joint1Control;
         private System.Windows.Forms.NumericUpDown joint2Control;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label baseServoLabel;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox liveModeToggle;
     }
 }
 

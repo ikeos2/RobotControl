@@ -20,9 +20,7 @@ namespace RobotControl
                 Parity = Parity.None,
                 DataBits = 8,
                 StopBits = StopBits.One,
-                Handshake = Handshake.None,
-                //ReadTimeout = 500,
-                //WriteTimeout = 500
+                Handshake = Handshake.None
             };
 
             comPort.Open();

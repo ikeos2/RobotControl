@@ -46,18 +46,12 @@ namespace RobotControl
             return SerialPort.GetPortNames();
         }
 
-        //public void SendCommand(byte servo, byte angle)
-        //{
-        //    comPort.Write(servo.ToString() + " " + angle.ToString());
-        //    //Thread.Sleep(1000);
-        //}
-
         public void SendCommand(byte servo, byte angle)
         {
             if(comPort != null)
             {
-                byte[] output = new byte[] { servo, angle };
-                comPort.Write(output, 0, 2);
+                byte[] output = new byte[] { 0xFF, servo, angle, (byte)(servo + angle) };
+                comPort.Write(output, 0, 4);
             }
         }
 

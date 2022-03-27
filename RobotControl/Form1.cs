@@ -85,20 +85,18 @@ namespace RobotControl
         private void Sweep(object sender, EventArgs e)
         {
             if (!connected) return;
-            int delay = 15;
             for(byte i = 0; i < 180; i++)
             {
                 comPort.SendCommand(1, i);
                 comPort.SendCommand(2, i);
                 comPort.SendCommand(3, i);
-                Thread.Sleep(delay);
             }
+            Thread.Sleep(100);
             for (byte i = 180; i > 0; i--)
             {
                 comPort.SendCommand(1, i);
                 comPort.SendCommand(2, i);
                 comPort.SendCommand(3, i);
-                Thread.Sleep(delay);
             }
         }
     }

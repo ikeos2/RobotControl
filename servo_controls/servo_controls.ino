@@ -1,12 +1,12 @@
 #include <Servo.h>
 
-Servo baseServo, joint1, joint2; 
 #define RANGE_MAX 180
 #define DEBUG 0
 
-int baseServoPin = 11;
-int joint1Pin = 10;
-int joint2Pin = 9;
+Servo baseServo, joint1, joint2; 
+byte baseServoPin = 11;
+byte joint1Pin = 10;
+byte joint2Pin = 9;
 
 void setup() {
   Serial.begin(38400);
@@ -16,12 +16,27 @@ void setup() {
 }
 
 void loop() {
-  int servoNumber = 0, angle = 0;
+  byte servoNumber = 0, angle = 0;
 
-  if (Serial.available() > 1) {
+  if (Serial.available() > 3) {
+    byte header = 0;
+    while(header != 0xFF){
+      header = Serial.read();
+    }
+    
     servoNumber = Serial.read();
     angle = Serial.read();
 
+    byte checksum = servoNumber + angle;
+    byte givenChecksum = Serial.read();
+
+    if(checksum != givenChecksum){
+      char message[40];
+      sprintf(message, "Mismatched checksum - calculated: %d, given %d", checksum, givenChecksum);
+      Serial.print(message);
+      return;
+    }
+    
     if(DEBUG){
       Serial.print("I got ");
       Serial.print(servoNumber, DEC);

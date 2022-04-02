@@ -39,7 +39,7 @@ void loop() {
     
     if(DEBUG){
       char debug[40];
-      sprintf(debug, "I got %d and %d", servoN, angleChecksum);
+      sprintf(debug, "I got %d and %d", servoNumber, angle);
       Serial.print(debug);
     }
 

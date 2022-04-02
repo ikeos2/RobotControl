@@ -1,5 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using RobotControl.Macros;
+using RobotControl.Serial;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace RobotControl
     public partial class Form1 : Form
     {
         SerialInterface comPort;
+        MacroControls macroControls;
         bool connected;
         bool liveMode;
 
@@ -48,6 +50,7 @@ namespace RobotControl
             {
                 int baudRate = int.Parse(baudRateSelector.Text);
                 comPort = new SerialInterface(portSelector.Text, baudRate);
+                macroControls = new MacroControls(comPort);
                 SetConnectionStatus(true);
             } catch (Exception) { } // eat the excpetion
         }
@@ -106,6 +109,15 @@ namespace RobotControl
         {
             liveMode = liveModeToggle.Checked;
             sendDataButton.Enabled = !liveMode;
+        }
+
+        private void PlayMacro(object sender, EventArgs e)
+        {
+            macroControls?.PlayMacro();
+        }
+        public void OpenFile(Object sender, EventArgs e)
+        {
+            macroControls?.OpenFile();
         }
 
         private void ServoUpdate(Object sender, EventArgs e)

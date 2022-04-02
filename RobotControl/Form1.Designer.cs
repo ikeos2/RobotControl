@@ -46,6 +46,10 @@ namespace RobotControl
             this.baseServoLabel = new System.Windows.Forms.Label();
             this.baseServoControl = new System.Windows.Forms.NumericUpDown();
             this.sendDataButton = new System.Windows.Forms.Button();
+            this.macroTab = new System.Windows.Forms.TabPage();
+            this.playMacroButton = new System.Windows.Forms.Button();
+            this.OpenMacroButton = new System.Windows.Forms.Button();
+            this.macroFilePath = new System.Windows.Forms.TextBox();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.settingsTab.SuspendLayout();
@@ -54,6 +58,7 @@ namespace RobotControl
             ((System.ComponentModel.ISupportInitialize)(this.joint1Control)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.joint2Control)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.baseServoControl)).BeginInit();
+            this.macroTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // portSelector
@@ -96,6 +101,7 @@ namespace RobotControl
             // 
             this.tabControl1.Controls.Add(this.settingsTab);
             this.tabControl1.Controls.Add(this.controlsTab);
+            this.tabControl1.Controls.Add(this.macroTab);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -244,6 +250,45 @@ namespace RobotControl
             this.sendDataButton.UseVisualStyleBackColor = true;
             this.sendDataButton.Click += new System.EventHandler(this.SendCommand);
             // 
+            // macroTab
+            // 
+            this.macroTab.Controls.Add(this.playMacroButton);
+            this.macroTab.Controls.Add(this.OpenMacroButton);
+            this.macroTab.Controls.Add(this.macroFilePath);
+            this.macroTab.Location = new System.Drawing.Point(4, 24);
+            this.macroTab.Name = "macroTab";
+            this.macroTab.Size = new System.Drawing.Size(242, 229);
+            this.macroTab.TabIndex = 2;
+            this.macroTab.Text = "Macros";
+            this.macroTab.UseVisualStyleBackColor = true;
+            // 
+            // playMacroButton
+            // 
+            this.playMacroButton.Location = new System.Drawing.Point(81, 119);
+            this.playMacroButton.Name = "playMacroButton";
+            this.playMacroButton.Size = new System.Drawing.Size(75, 23);
+            this.playMacroButton.TabIndex = 4;
+            this.playMacroButton.Text = "Play";
+            this.playMacroButton.UseVisualStyleBackColor = true;
+            this.playMacroButton.Click += new System.EventHandler(this.PlayMacro);
+            // 
+            // OpenMacroButton
+            // 
+            this.OpenMacroButton.Location = new System.Drawing.Point(153, 41);
+            this.OpenMacroButton.Name = "OpenMacroButton";
+            this.OpenMacroButton.Size = new System.Drawing.Size(75, 23);
+            this.OpenMacroButton.TabIndex = 3;
+            this.OpenMacroButton.Text = "Open";
+            this.OpenMacroButton.UseVisualStyleBackColor = true;
+            this.OpenMacroButton.Click += new System.EventHandler(this.OpenFile);
+            // 
+            // macroFilePath
+            // 
+            this.macroFilePath.Location = new System.Drawing.Point(12, 12);
+            this.macroFilePath.Name = "macroFilePath";
+            this.macroFilePath.Size = new System.Drawing.Size(216, 23);
+            this.macroFilePath.TabIndex = 1;
+            // 
             // connectionStatusLabel
             // 
             this.connectionStatusLabel.AutoSize = true;
@@ -272,6 +317,8 @@ namespace RobotControl
             ((System.ComponentModel.ISupportInitialize)(this.joint1Control)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.joint2Control)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.baseServoControl)).EndInit();
+            this.macroTab.ResumeLayout(false);
+            this.macroTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,6 +345,10 @@ namespace RobotControl
         private System.Windows.Forms.Label baseServoLabel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox liveModeToggle;
+        private System.Windows.Forms.TabPage macroTab;
+        private System.Windows.Forms.TextBox macroFilePath;
+        private System.Windows.Forms.Button OpenMacroButton;
+        private System.Windows.Forms.Button playMacroButton;
     }
 }
 

@@ -38,10 +38,9 @@ void loop() {
     }
     
     if(DEBUG){
-      Serial.print("I got ");
-      Serial.print(servoNumber, DEC);
-      Serial.print(" and ");
-      Serial.println(angle, DEC);
+      char debug[40];
+      sprintf(debug, "I got %d and %d", servoN, angleChecksum);
+      Serial.print(debug);
     }
 
     if(angle > RANGE_MAX) { angle = RANGE_MAX; }

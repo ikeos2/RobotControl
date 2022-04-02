@@ -1,5 +1,4 @@
 ﻿using RobotControl.Serial;
-using System;
 using System.IO;
 using System.Windows.Forms;
 

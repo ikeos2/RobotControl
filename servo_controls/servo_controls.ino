@@ -13,6 +13,10 @@ void setup() {
   baseServo.attach(baseServoPin);
   joint1.attach(joint1Pin);
   joint2.attach(joint2Pin);
+  
+  baseServo.write(60);
+  joint1.write(145);
+  joint2.write(170);	
 }
 
 void loop() {

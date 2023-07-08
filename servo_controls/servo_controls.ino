@@ -13,6 +13,10 @@ void setup() {
   baseServo.attach(baseServoPin);
   joint1.attach(joint1Pin);
   joint2.attach(joint2Pin);
+  
+  baseServo.write(60);
+  joint1.write(145);
+  joint2.write(170);	
 }
 
 void loop() {
@@ -38,10 +42,9 @@ void loop() {
     }
     
     if(DEBUG){
-      Serial.print("I got ");
-      Serial.print(servoNumber, DEC);
-      Serial.print(" and ");
-      Serial.println(angle, DEC);
+      char debug[40];
+      sprintf(debug, "I got %d and %d", servoNumber, angle);
+      Serial.print(debug);
     }
 
     if(angle > RANGE_MAX) { angle = RANGE_MAX; }

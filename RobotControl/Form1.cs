@@ -1,5 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using RobotControl.Macros;
+using RobotControl.Serial;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace RobotControl
     public partial class Form1 : Form
     {
         SerialInterface comPort;
+        MacroControls macroControls;
         bool connected;
         bool liveMode;
 
@@ -48,16 +50,15 @@ namespace RobotControl
             {
                 int baudRate = int.Parse(baudRateSelector.Text);
                 comPort = new SerialInterface(portSelector.Text, baudRate);
+                macroControls = new MacroControls(comPort);
+                macroControls.CommandSent += HandleCommandSentMessage;
                 SetConnectionStatus(true);
             } catch (Exception) { } // eat the excpetion
         }
 
         private void Disconnect()
         {
-            if(comPort != null)
-            {
-                comPort.CloseConnection();
-            }
+            comPort?.CloseConnection();   
         }
 
         private void SetConnectionStatus(bool newConnectionStatus)
@@ -108,6 +109,23 @@ namespace RobotControl
             sendDataButton.Enabled = !liveMode;
         }
 
+        private void PlayMacro(object sender, EventArgs e)
+        {
+            macroControls?.PlayMacro();
+        }
+
+        public void OpenFile(Object sender, EventArgs e)
+        {
+            string path = macroControls?.OpenFile();
+            macroFilePath.Text = path ?? macroFilePath.Text;
+        }
+
+        private void ClearMacroButton_Click(object sender, EventArgs e)
+        {
+            macroControls.ClearMacro();
+            macroFilePath.Text = "";
+        }
+
         private void ServoUpdate(Object sender, EventArgs e)
         {
             if (!liveMode || !connected) return;
@@ -127,6 +145,16 @@ namespace RobotControl
                     comPort.SendCommand(3, (byte)joint2Control.Value);
                     break;
             }
+        }
+
+        /// <param name="message">message, no line ending</param>
+        public void HandleCommandSentMessage(object sender, string message)
+        {
+            CommandLog.Text += message + "\n";
+            // set the current caret position to the end
+            CommandLog.SelectionStart = CommandLog.Text.Length;
+            // scroll it automatically
+            CommandLog.ScrollToCaret();
         }
     }
 }

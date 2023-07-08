@@ -19,21 +19,26 @@ namespace RobotControl.Macros
             {
                 var inputs = line.Trim().Split(' ');
                 //TODO: kill
-                if (inputs.Length != 4) break;
+                if (inputs.Length < 4) break;
 
                 bool success = true;
                 success &= byte.TryParse(inputs[0], out byte baseServoAngle);
                 success &= byte.TryParse(inputs[1], out byte joint1Angle);
                 success &= byte.TryParse(inputs[2], out byte joint2Angle);
                 success &= int.TryParse(inputs[3], out int delay);
+                
                 if (!success) break;
+
+                string desc = line;
+                if (inputs.Length == 5) desc = inputs[4];
 
                 instructions.Add(new Instruction()
                 {
                     baseServoAngle = baseServoAngle,
                     joint1Angle = joint1Angle,
                     joint2Angle = joint2Angle,
-                    delay = delay
+                    delay = delay,
+                    description = desc
                 });
             }
         }

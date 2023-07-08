@@ -51,16 +51,14 @@ namespace RobotControl
                 int baudRate = int.Parse(baudRateSelector.Text);
                 comPort = new SerialInterface(portSelector.Text, baudRate);
                 macroControls = new MacroControls(comPort);
+                macroControls.CommandSent += HandleCommandSentMessage;
                 SetConnectionStatus(true);
             } catch (Exception) { } // eat the excpetion
         }
 
         private void Disconnect()
         {
-            if(comPort != null)
-            {
-                comPort.CloseConnection();
-            }
+            comPort?.CloseConnection();   
         }
 
         private void SetConnectionStatus(bool newConnectionStatus)
@@ -115,9 +113,17 @@ namespace RobotControl
         {
             macroControls?.PlayMacro();
         }
+
         public void OpenFile(Object sender, EventArgs e)
         {
-            macroControls?.OpenFile();
+            string path = macroControls?.OpenFile();
+            macroFilePath.Text = path ?? macroFilePath.Text;
+        }
+
+        private void ClearMacroButton_Click(object sender, EventArgs e)
+        {
+            macroControls.ClearMacro();
+            macroFilePath.Text = "";
         }
 
         private void ServoUpdate(Object sender, EventArgs e)
@@ -139,6 +145,16 @@ namespace RobotControl
                     comPort.SendCommand(3, (byte)joint2Control.Value);
                     break;
             }
+        }
+
+        /// <param name="message">message, no line ending</param>
+        public void HandleCommandSentMessage(object sender, string message)
+        {
+            CommandLog.Text += message + "\n";
+            // set the current caret position to the end
+            CommandLog.SelectionStart = CommandLog.Text.Length;
+            // scroll it automatically
+            CommandLog.ScrollToCaret();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using RobotControl.Serial;
+using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace RobotControl.Macros
@@ -8,7 +10,7 @@ namespace RobotControl.Macros
     {
         private Macro loadedMacro;
         private readonly SerialInterface _interface;
-
+        public event EventHandler<string> CommandSent;
 
         public MacroControls(SerialInterface iface)
         {
@@ -16,7 +18,7 @@ namespace RobotControl.Macros
             loadedMacro = null;
         }
 
-        public void OpenFile()
+        public string OpenFile()
         {
             var fileContent = string.Empty;
             using OpenFileDialog openFileDialog = new();
@@ -40,7 +42,12 @@ namespace RobotControl.Macros
                 }
 
                 loadedMacro = new Macro(fileContent);
+
+                string fileName = filePath.Split('\\').Last();
+                CommandSent?.Invoke(this, new($"Loaded {fileName}"));
+                return fileName;
             }
+            return null;
         }
 
         public void PlayMacro()
@@ -49,8 +56,15 @@ namespace RobotControl.Macros
 
             foreach(var command in loadedMacro.instructions)
             {
+                CommandSent?.Invoke(this, new(command.ToString()));
                 _interface.SendCommand(command);
             }
+        }
+
+        public void ClearMacro()
+        {
+            CommandSent?.Invoke(this, new("=== Cleared Macro ==="));
+            loadedMacro = null;
         }
     }
 }
